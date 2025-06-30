@@ -1,0 +1,7 @@
+ID:01
+Name:Ashok
+City:BhavnagarID:02
+Name:Hitesh
+City:RajkotID:03
+Name:Sanket
+City:Rajkot
