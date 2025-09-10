@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from .forms import *
+from django.contrib.auth import logout
 
 # Create your views here.
 def index(request):
@@ -16,7 +17,18 @@ def contact(request):
     return render(request,'contact.html')
 
 def profile(request):
-    return render(request,'profile.html')
+    user=request.session.get('user')
+    userid=request.session.get('userid')
+    cuser=UserSignup.objects.get(id=userid)
+    if request.method=='POST':
+        form=UpdateForm(request.POST,instance=cuser)
+        if form.is_valid():
+            form.save()
+            print("Profile updated!")
+            return redirect('/')
+        else:
+            print(form.errors)
+    return render(request,'profile.html',{'user':user,'userid':cuser})
 
 def signin(request):
     if request.method=='POST':
@@ -24,9 +36,12 @@ def signin(request):
         pas=request.POST['password']
 
         user=UserSignup.objects.filter(username=unm,password=pas)
+        userid=UserSignup.objects.get(username=unm)
+        print("UserID:",userid.id)
         if user:
             print("Login Successfully!")
             request.session['user']=unm
+            request.session['userid']=userid.id
             return redirect('/')
         else:
             print("Error!Login faild....")
@@ -42,3 +57,9 @@ def signup(request):
         else:
             print(form.errors)
     return render(request,'signup.html')
+
+
+def userlogout(request):
+    logout(request)
+    return redirect('/')
+    
