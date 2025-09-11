@@ -8,13 +8,27 @@ def index(request):
     return render(request,'index.html',{'user':user})
 
 def notes(request):
-    return render(request,'notes.html')
+    msg=""
+    user=request.session.get('user')
+    if request.method=='POST':
+        form=NotesForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            print("Notes has been submitted!")
+            msg="Notes has been submitted!"
+            #return redirect('notes')
+        else:
+            print(form.errors)
+            msg="Error!Something went wrong..."
+    return render(request,'notes.html',{'user':user,'msg':msg})
 
 def about(request):
-    return render(request,'about.html')
+    user=request.session.get('user')
+    return render(request,'about.html',{'user':user})
 
 def contact(request):
-    return render(request,'contact.html')
+    user=request.session.get('user')
+    return render(request,'contact.html',{'user':user})
 
 def profile(request):
     user=request.session.get('user')

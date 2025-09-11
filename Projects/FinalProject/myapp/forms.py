@@ -10,3 +10,8 @@ class UpdateForm(forms.ModelForm):
     class Meta:
         model=UserSignup
         fields=['firstname','lastname','username','password','city','state','mobile']
+        
+class NotesForm(forms.ModelForm):
+    class Meta:
+        model=NotesData
+        fields='__all__'
