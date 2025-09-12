@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from .forms import *
 from django.contrib.auth import logout
+from django.core.mail import send_mail
+from FinalProject import settings
 
 # Create your views here.
 def index(request):
@@ -27,8 +29,20 @@ def about(request):
     return render(request,'about.html',{'user':user})
 
 def contact(request):
+    msg=""
     user=request.session.get('user')
-    return render(request,'contact.html',{'user':user})
+    if request.method=='POST':
+        form=ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            msg="Your form has been submitted!"
+            
+            #Email Sending Code
+            send_mail(subject="Thank You!",message="Thank you for connecting us!\nWe will contact you.\n\nEnjoy our serviece!\n\nThanks & Regards!\nSanket Chauhan\nNotesApp Team\nsanket.tops@gmail.com | +91 9724799469",from_email=settings.EMAIL_HOST_USER,recipient_list=[request.POST['email']])
+            
+        else:
+            msg="Error!Something went wrong..."
+    return render(request,'contact.html',{'user':user,'msg':msg})
 
 def profile(request):
     user=request.session.get('user')

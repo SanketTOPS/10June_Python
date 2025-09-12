@@ -17,5 +17,11 @@ class NotesData(models.Model):
     desc=models.TextField()
     notesfile=models.FileField(upload_to='Notes')
     
+class Contact(models.Model):
+    fullname=models.CharField(max_length=100)
+    email=models.EmailField()
+    subject=models.CharField(max_length=200)
+    msg=models.TextField()
+    
     
     

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes</title>
+    <title>Notes - NotesApp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
@@ -26,24 +26,22 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/notes">Notes</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/about">About</a>
+                        <a class="nav-link" aria-current="page" href="/about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/contact">Contact</a>
+                        <a class="nav-link" aria-current="page" href="/contact">Contact</a>
                     </li>
                 </ul>
                 {% if user is none %}
                 <a href="/signin" class="btn btn-outline-warning">Signin</a>
                 <a href="/signup" class="btn btn-outline-success mx-2">Signup</a>
                 {% else %}
-                <!-- <a href="#" class="btn btn-outline-danger">Logout</a> -->
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
@@ -60,59 +58,69 @@
     </nav>
     <!-- Navbar End -->
 
-    <!-- Notes Form Start -->
-    <div class="container my-3">
-
+    <!-- Notes Section -->
+    <div class="container my-5">
         {% if user is none %}
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-success shadow-sm rounded-3" role="alert">
             <h4 class="alert-heading">Hey!</h4>
-            <p>If you want to submit any notes, <a href="/signin">Login First!</a></p>
+            <p>If you want to submit any notes, <a href="/signin" class="fw-bold text-decoration-none">Login First!</a>
+            </p>
             <hr>
         </div>
-
         {% else %}
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="card-body p-4">
+                        <h2 class="text-center text-dark mb-4">Your Notes</h2>
 
-        <h1 style="text-align: center;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-            Your Notes</h1>
-        <hr>
-        {% if msg %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>{{msg}}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        {% if msg %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>{{msg}}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endif %}
+
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="techstack" class="form-label">Techstack</label>
+                                <select class="form-select" name="tech" id="techstack" required>
+                                    <option selected disabled>Select your Techstack!</option>
+                                    <option>Python</option>
+                                    <option>Java</option>
+                                    <option>PHP</option>
+                                    <option>Mobile App</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Query Title</label>
+                                <input type="text" name="title" class="form-control" id="title"
+                                    placeholder="Enter title" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="desc" class="form-label">Problem Description</label>
+                                <textarea class="form-control" name="desc" id="desc" rows="4"
+                                    placeholder="Describe your problem..." required></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Attach your Screenshot/File</label>
+                                <input class="form-control" name="notesfile" type="file" id="formFile">
+                            </div>
+
+                            <button type="submit" class="btn btn-dark w-100">Submit Notes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
         {% endif %}
-
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <label for="exampleFormControlInput1" class="form-label">Techstack</label>
-            <select class="form-select form-select-lg mb-3" name="tech" aria-label="Large select example">
-                <option selected>Select yout Techstack!</option>
-                <option>Python</option>
-                <option>Java</option>
-                <option>PHP</option>
-                <option>Mobile App</option>
-                <option>Other</option>
-            </select>
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Query Title</label>
-                <input type="text" name="title" class="form-control" id="exampleFormControlInput1">
-            </div>
-
-            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Problem Description</label>
-                <textarea class="form-control" name="desc" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="formFile" class="form-label">Attach your SS/File's</label>
-                <input class="form-control" name="notesfile" type="file" id="formFile">
-            </div>
-
-            <button type="submit" class="btn btn-dark btn-lg">Submit Notes</button>
-        </form>
-        {% endif %}
     </div>
-
-    <!-- Notes Form End -->
+    <!-- End Notes Section -->
 
 </body>
 
