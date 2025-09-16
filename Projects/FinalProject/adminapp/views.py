@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from myapp.models import *
 
 # Create your views here.
 def admin_login(request):
@@ -14,7 +15,14 @@ def admin_login(request):
     return render(request,'admin_login.html')
 
 def admin_dashboard(request):
-    return render(request,'admin_dashboard.html')
+    data=UserSignup.objects.all()
+    x=data.count()
+    return render(request,'admin_dashboard.html',{'x':x})
 
 def userdata(request):
-    return render(request,'userdata.html')
+    data=UserSignup.objects.all()
+    return render(request,'userdata.html',{'data':data})
+
+def notesdata(request):
+    ndata=NotesData.objects.all()
+    return render(request,'notesdata.html',{'ndata':ndata})
