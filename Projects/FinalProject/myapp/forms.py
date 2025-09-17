@@ -14,7 +14,7 @@ class UpdateForm(forms.ModelForm):
 class NotesForm(forms.ModelForm):
     class Meta:
         model=NotesData
-        fields='__all__'
+        fields=['tech','title','desc','notesfile']
 
 class ContactForm(forms.ModelForm):
     class Meta:

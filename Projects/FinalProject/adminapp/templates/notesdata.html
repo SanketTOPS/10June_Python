@@ -27,10 +27,12 @@
                     <thead>
                         <tr class="bg-gray-100 text-left text-gray-600">
                             <th class="p-3">#</th>
+                            <th class="p-3">Submitted At</th>
                             <th class="p-3">Technology</th>
                             <th class="p-3">Title</th>
                             <th class="p-3">Description</th>
                             <th class="p-3">File's</th>
+                            <th class="p-3">Status</th>
                             <th class="p-3 text-center">Actions</th>
                         </tr>
                     </thead>
@@ -38,16 +40,18 @@
                         {% for i in ndata %}
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-3">{{i.id}}</td>
+                            <td class="p-3">{{i.submitted_at}}</td>
                             <td class="p-3">{{i.tech}}</td>
                             <td class="p-3">{{i.title}}</td>
                             <td class="p-3">{{i.desc}}</td>
-                            <td class="p-3"><a href="{{i.notesfile}}">{{i.notesfile}}</a>
+                            <td class="p-3"><a href="{{i.notesfile.url}}" download>{{i.notesfile}}</a>
                             </td>
+                            <td class="p-3">{{i.status}}</td>
                             <td class="p-3 flex justify-center gap-2">
-                                <button
-                                    class="px-3 py-1 bg-green-500 text-white rounded-lg text-sm hover:bg-blue-600">Approve</button>
-                                <button
-                                    class="px-3 py-1 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">Reject</button>
+                                <a href="/adminapp/approve_notes/{{i.id}}"
+                                    class="px-3 py-1 bg-green-500 text-white rounded-lg text-sm hover:bg-blue-600">Approve</a>
+                                <a href="/adminapp/reject_notes/{{i.id}}"
+                                    class="px-3 py-1 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">Reject</a>
                             </td>
                         </tr>
                         {% endfor %}

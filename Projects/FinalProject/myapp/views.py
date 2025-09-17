@@ -14,10 +14,13 @@ def notes(request):
     user=request.session.get('user')
     if request.method=='POST':
         form=NotesForm(request.POST,request.FILES)
-        if form.is_valid():
-            form.save()
+        if form.is_valid():    
+            #form.save()
+            req=form.save(commit=False)
+            req.status="Pending"
             print("Notes has been submitted!")
             msg="Notes has been submitted!"
+            req.save()
             #return redirect('notes')
         else:
             print(form.errors)

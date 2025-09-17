@@ -1,5 +1,6 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse,get_object_or_404
 from myapp.models import *
+import datetime
 
 # Create your views here.
 def admin_login(request):
@@ -26,3 +27,21 @@ def userdata(request):
 def notesdata(request):
     ndata=NotesData.objects.all()
     return render(request,'notesdata.html',{'ndata':ndata})
+
+def approve_notes(request,id):
+    notes=get_object_or_404(NotesData,id=id)
+    notes.status="Approve"
+    notes.updated_at=datetime.datetime.now()
+    notes.save()
+    
+    #Email Sending Code
+    
+    return redirect('notesdata')
+    
+def reject_notes(request,id):
+    notes=get_object_or_404(NotesData,id=id)
+    notes.status="Rejected"
+    notes.updated_at=datetime.datetime.now()
+    notes.save()
+    return redirect('notesdata')
+    

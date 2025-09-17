@@ -12,10 +12,19 @@ class UserSignup(models.Model):
     mobile=models.BigIntegerField()
 
 class NotesData(models.Model):
+    submitted_at=models.DateTimeField(auto_now_add=True)
     tech=models.CharField(max_length=50)
     title=models.CharField(max_length=100)
     desc=models.TextField()
     notesfile=models.FileField(upload_to='Notes')
+    statuschoice=[
+        ("Pending","Pending"),
+        ("Approve","Approve"),
+        ("Rejected","Rejected"),
+    ]
+    status=models.CharField(max_length=20,choices=statuschoice)
+    updated_at=models.DateTimeField(blank=True,null=True)
+    
     
 class Contact(models.Model):
     fullname=models.CharField(max_length=100)
